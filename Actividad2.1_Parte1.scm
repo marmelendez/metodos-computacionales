@@ -1,4 +1,10 @@
 //Problema 1
+(define (fahrenheit-to-celsius f)
+    (if (number? f)
+        (/ (* 5 (- f 32)) 9)
+        'not_number
+    )
+)
 
 //Problema 2
 
