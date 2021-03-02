@@ -7,6 +7,14 @@
 )
 
 //Problema 2
+(define (sign n)
+    (cond
+        ((not (integer? n)) 'not_integer)
+        ((> n 0) 1)
+        ((< n 0) -1)
+        (else 0)
+    )
+)
 
 //Problema 3
 
