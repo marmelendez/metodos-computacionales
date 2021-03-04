@@ -21,5 +21,11 @@
 //Problema 4
 
 //Problema 6
+(define (duplicate lista)
+    (cond 
+        ((null? lista) '())
+        (else (cons (car lista) (cons (car lista) (duplicate (cdr lista)))))
+    )
+)
 
 //Problema 10
