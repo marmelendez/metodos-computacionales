@@ -1,0 +1,25 @@
+//Problema 3
+
+(define (roots a b c)                 
+  (cond
+      ((not (integer? a)) 'not_integer)
+      ((not (integer? b)) 'not_integer)
+      ((not (integer? c)) 'not_integer)
+      (else   (/ (- (sqrt (- (* b b) (* 4 (* a c)))) b) (* 2 a)))                                       
+   )
+)
+
+-------------------------------------------------------------------------------------
+//Problema 4
+
+(define (bmi w h)
+   (cond
+       ((not (integer? w)) 'not_integer)
+       ((not (number? h)) 'not_number)
+       ((< (/ w (* h h)) 20) 'underweight)
+       ((< (/ w (* h h)) 25) 'normal)
+       ((< (/ w (* h h)) 30) 'obese1)
+       ((< (/ w (* h h)) 40) 'obese2)
+       (else 'obese3)
+   )
+)                                                                                                                   )
