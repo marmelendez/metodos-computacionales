@@ -29,3 +29,14 @@
 )
 
 //Problema 10
+(define (positives lista)
+    (cond 
+        ((null? lista) '())
+        (else 
+            (if (>= (car lista) 0)
+                (cons (car lista) (positives (cdr lista)))
+                (positives (cdr lista))
+            )
+        )
+    )
+)
