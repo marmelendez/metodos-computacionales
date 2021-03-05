@@ -1,0 +1,26 @@
+//Problema 1
+
+(define (insert n lista)
+  (cond 
+      ((null? lista) (cons n lista))
+      ((< n (car lista)) (cons n lista))
+      (else (insert2 n (cdr lista) (car lista)))
+  )
+)
+
+(define (insert2 n lista ini)
+   (cond
+      ((null? lista) (append ini (cons n '())))
+      ((< n (car lista)) (cons (append ini (cons n '())) lista))
+      (else (insert3 n (cdr lista) (cons ini (cons (car lista) '())))))
+  )
+)
+
+(define (insert3 n lista ini)
+   (cond
+      ((null? lista) (append ini (cons n '())))
+      ((< n (car lista)) (append (append ini (cons n '())) lista))
+      (else (insert3 n (cdr lista) (append ini (cons (car lista) '())))))
+  )
+)
+
