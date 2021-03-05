@@ -1,8 +1,23 @@
 //Problema 1
+(define (insert1 n lst flag)
+    (cond 
+        ((AND (null? lst) (= flag 1)) (cons n '()))
+        ((null? lst) '())
+        (else 
+            (if (AND (< n (car lst)) (= flag 1))
+                (cons n (cons (car lst) (insert1 n (cdr lst) -1)))
+                (cons (car lst) (insert1 n (cdr lst) flag))
+            )
+        )
+    )
+)
 
-
-//Problema 3
-
+(define (insert n lst)
+    (if (null? lst) 
+        (cons n '())
+        (insert1 n lst 1)
+    )
+)
 
 //Problema 6
 (define (deep-reverse l)
