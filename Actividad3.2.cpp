@@ -5,10 +5,9 @@
 
 using namespace std;
 
-vector<string> leerArchivo(){
+vector<string> leerArchivo(string nombreArchivo){
     vector<string> expresiones;
     string linea;
-    string nombreArchivo = "expresiones.txt";
     ifstream archivo(nombreArchivo.c_str());
 
     if(archivo.fail()){
@@ -26,23 +25,17 @@ vector<string> leerArchivo(){
     return expresiones;
 }
 
-void imprimirArchivo(vector<string> expresiones){
-    for (int i=0; i<expresiones.size(); i++){
-        cout<<expresiones[i]<<endl;
-    }
-}
-
 char* str2Char(string miString){
     char* charArr = &miString[0];
     return charArr;
 }
 
 void lexerAritmetico(string archivo){
-
+    vector<string> expresiones = leerArchivo(archivo);
 }
 
 int main(){
-    vector<string> expresiones = leerArchivo();
-    imprimirArchivo(expresiones);
+    string nombreArchivo = "expresiones.txt";
+    lexerAritmetico(nombreArchivo);
     return 0; 
 }
