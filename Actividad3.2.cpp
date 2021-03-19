@@ -32,6 +32,11 @@ void imprimirArchivo(vector<string> expresiones){
     }
 }
 
+char* str2Char(string miString){
+    char* charArr = &miString[0];
+    return charArr;
+}
+
 void lexerAritmetico(string archivo){
 
 }
