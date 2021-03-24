@@ -1,6 +1,10 @@
 package AnalizadorLexico;
 
 import java.util.Vector;
+import java.io.File; 
+import java.io.FileNotFoundException;  
+import java.util.Scanner; 
+
 
 public class Analizador {
     //ATRIBUTOS
@@ -29,7 +33,29 @@ public class Analizador {
         {-1, 12, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
     };
 
+    //METODOS
+
+    /* Lee un nombreArchivo que representa la ruta donde se encuentra el archivo
+    Guarda contenido del archivo en un vector<String>
+    Si no puede abrirlo manda una excepción */
+    private void leerArchivo(String nombreArchivo){
+        try {
+            File archivo = new File(nombreArchivo);
+            Scanner scan = new Scanner(archivo);
+            while (scan.hasNextLine()) { //Mientras exista una línea siguiente
+                this.texto.add(scan.nextLine()); //Guarda la línea como string en el vector
+            }
+            scan.close();
+        }
+
+        catch (FileNotFoundException e) { //Si recibe la excepción FileNotFoundException le informa al usuario
+            System.out.println("Error, no se encontro el archivo con ese nombre");
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
+        Analizador a = new Analizador();
+        a.leerArchivo("expresiones.txt");
         
     }
 }
