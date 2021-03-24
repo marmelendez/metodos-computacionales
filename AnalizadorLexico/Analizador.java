@@ -53,6 +53,21 @@ public class Analizador {
             e.printStackTrace();
         }
     }
+
+    private void identificarToken(){
+        
+    }
+
+    /* Manda cada línea del archivo de entrada a función de identificarToken */
+    public void lexerAritmetico(String archivo){
+        leerArchivo(archivo);
+        String linea;
+        for (int i=0; i< this.texto.size();i++){ //Por cada línea el archivo
+            linea = this.texto.get(i);
+            this.charArr= linea.toCharArray(); //Transforma línea a arreglo de chars
+            identificarToken(); //Llama a funcion para identificar token y su tipo
+        }
+    }
     public static void main(String[] args) {
         Analizador a = new Analizador();
         a.leerArchivo("expresiones.txt");
