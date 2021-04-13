@@ -1,0 +1,13 @@
+4.1
+a) 
+    G (LC) = {S, E, N, P}
+    E = { a, b }
+    S = S
+    N = { S }
+    P = S -> E
+        S -> a
+        S -> b
+        S -> aSa
+        S -> bSb
+    
+    S -> E | a | b | aSa | bSb
