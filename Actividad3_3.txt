@@ -1,3 +1,5 @@
+E representa vacío
+
 4.1
 a) 
     G (LC) = {S, E, N, P}
@@ -11,3 +13,8 @@ a)
         S -> bSb
     
     S -> E | a | b | aSa | bSb
+
+b) 
+    L = a2nbn donde n > 0
+    S -> E | SS | aaSb | aSbSa | bSaa 
+
