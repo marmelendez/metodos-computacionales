@@ -44,7 +44,8 @@ b) Rightmost derivation
     aaabBB -> aaaBBB (regla 3a)
     aaaBBB -> aaBB (regla 3c)
     aaBB -> aB (regla 3c)
-    aB -> S (regla 1a)
+    aB -> ab (regla 3a)
+    ab -> S (regla 1a)
 
 
 c) Parse tree
