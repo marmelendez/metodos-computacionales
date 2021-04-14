@@ -21,7 +21,7 @@ b)
 4.8 
 Reglas:
     1.	S -> aB | bA
-        a.	S -> ab
+        a.	S -> aB
         b.	S -> bA
     2.	A -> a | aS | bAA
         a.	A -> a
@@ -35,17 +35,16 @@ Reglas:
 a) Leftmost derivation
 
 b) Rightmost derivation
-    aaabbabbba -> aaabbabbbA (regla 2a)
-    aaabbabbbA -> aaabbabbS (regla 1b)
-    aaabbabbS -> aaabbabB (regla 3b)
-    aaabbabB -> aaabbaBB (regla 3a)
-    aaabbaBB -> aaabbB (regla 3c)
-    aaabbB -> aaabBB (regla 3a)
-    aaabBB -> aaaBBB (regla 3a)
-    aaaBBB -> aaBB (regla 3c)
-    aaBB -> aB (regla 3c)
-    aB -> ab (regla 3a)
-    ab -> S (regla 1a)
+    S -> aB (regla 1a)
+    aB  -> aaBB (regla 3c)
+    aaBB -> aaBaBB (regla 3c)
+    aaBaBB -> aaBaBbS (regla 3b)
+    aaBaBbS -> aaBaBbbA (regla 1b)
+    aaBaBbbA -> aaBaBbba (regla 2a)
+    aaBaBbba -> aaBabbba (regla 3a)
+    aaBabbba -> aaaBBabbba (regla 3c)
+    aaaBBabbba -> aaaBbabbba (regla 3a)
+    aaaBbabbba -> aaabbabbba (regla 3a)
 
 
 c) Parse tree
