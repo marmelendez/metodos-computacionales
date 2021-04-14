@@ -33,6 +33,8 @@ Reglas:
         c.	B -> aBB
 
 a) Leftmost derivation
+
+b) Rightmost derivation
     aaabbabbba -> aaabbabbbA (regla 2a)
     aaabbabbbA -> aaabbabbS (regla 1b)
     aaabbabbS -> aaabbabB (regla 3b)
@@ -43,8 +45,6 @@ a) Leftmost derivation
     aSBB -> ABB (regla 2b)
     ABB -> aBB (regla 2a)
     aBB -> B (regla 3c)
-
-b) Rightmost derivation
 
 c) Parse tree
 
