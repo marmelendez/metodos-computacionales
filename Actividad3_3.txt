@@ -18,3 +18,34 @@ b)
     L = a2nbn donde n > 0
     S -> E | SS | aaSb | aSbSa | bSaa 
 
+4.8 
+Reglas:
+    1.	S -> aB | bA
+        a.	S -> ab
+        b.	S -> bA
+    2.	A -> a | aS | bAA
+        a.	A -> a
+        b.	A -> aS
+        c.	A -> bAA
+    3.	B -> b | bS | aBB
+        a.	B -> b
+        b.	B -> bS
+        c.	B -> aBB
+
+a) Leftmost derivation
+    aaabbabbba -> aaabbabbbA (regla 2a)
+    aaabbabbbA -> aaabbabbS (regla 1b)
+    aaabbabbS -> aaabbabB (regla 3b)
+    aaabbabB -> aaabbaBB (regla 3a)
+    aaabbaBB -> aaabbB (regla 3c)
+    aaabbB -> aabBB (regla 3a)
+    aabBB -> aSBB (regla 1a)
+    aSBB -> ABB (regla 2b)
+    ABB -> aBB (regla 2a)
+    aBB -> B (regla 3c)
+
+b) Rightmost derivation
+
+c) Parse tree
+
+
