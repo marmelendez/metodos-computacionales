@@ -33,6 +33,17 @@ Reglas:
         c.	B -> aBB
 
 a) Leftmost derivation
+    S -> aB (regla 1a)
+    aB -> aaBB (regla 3c)
+    aaBB -> aaaBBB (regla 3c)
+    aaaBBB -> aaabBB (regla 3a)
+    aaabBB -> aaabbB (regla 3a)
+    aaabbB -> aaabbaBB (regla 3c)
+    aaabbaBB -> aaabbabB (regla 3a)
+    aaabbabB -> aaabbabbS (regla 3b)
+    aaabbabbS -> aaabbabbbA (regla 1b)
+    aaabbabbbA -> aaabbabbba (regla 2a)
+    
 
 b) Rightmost derivation
     S -> aB (regla 1a)
@@ -49,4 +60,30 @@ b) Rightmost derivation
 
 c) Parse tree
 
-
+                  (S)
+                ___|____
+               |        |
+               V        V  
+              (a)      (B)
+                     ____|___________
+                     |   |          |
+                     V   V          V
+                    (a) (B)        (B)
+                     ____|____      |________      
+                     |   |   |      |   |   |
+                     V   V   V      V   V   V
+                    (a) (B) (B)    (a) (B) (B)
+                         |   |          |   |___     
+                         V   V          V   |  |
+                        (b) (b)        (b)  V  V
+                                           (b) (S)
+                                                |____
+                                                |   |
+                                                V   V
+                                               (b) (A)
+                                                    |
+                                                    V
+                                                   (a)
+                 
+                 
+            
