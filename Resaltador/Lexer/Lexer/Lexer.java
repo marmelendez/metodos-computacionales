@@ -45,13 +45,16 @@ public class Lexer {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Resaltador lexico</title>
             </head>
-            <body>
-            """;
+            <body>""";
             String finalHTML = "\n</body>\n</html>";
-            FileWriter escritor = new FileWriter("archivoResaltador.html");
+            FileWriter escritor = new FileWriter("resaltador.html");
             escritor.write(inicioHTML);
             for (Token token: tokens){
-                escritor.write("\t<span style=\"color:"+ token.getColor() +"\">" + token.getValor()  + "</span>\n");
+                if (token.getValor().equals("<br>")){
+                    escritor.write(token.getValor());
+                } else{
+                    escritor.write("\n\t<span style=\"color:"+ token.getColor() +"\">" + token.getValor()  + "</span>");
+                }
             }
             escritor.write(finalHTML);
             escritor.close();
@@ -154,8 +157,12 @@ public class Lexer {
 
     private static void lexerAritmetico(String archivo){
         Vector<String> texto = leerArchivo(archivo);
+
         for(String linea: texto){
             lexer(linea);
+            Token saltoLinea = new Token();
+            saltoLinea.setValor("<br>");
+            tokens.add(saltoLinea);
         }
 
         for (Token token: tokens){

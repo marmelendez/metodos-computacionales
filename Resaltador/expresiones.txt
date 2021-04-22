@@ -1,5 +1,5 @@
 a = 7 / m
 hola define
-
-
-
+;esto es un comentario
+'simbolo 72. 73.12e-10
++ - * ^ var12_ Var_3 32.1E12
