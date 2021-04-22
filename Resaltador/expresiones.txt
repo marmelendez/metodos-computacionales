@@ -1,13 +1,3 @@
-a#tt;comentario
-++a12_:(#t'simbolo hola
-++a;comentario
-12 7. 73. 73.2 7.23 7.e- 8.12E
-#tt #f
-'esto 'es 'simbolo
-= + - * / ^
-var VAR var12_ var_12 var12 var_ v_ V1_
-( define )
-;esto es un comentario jeje
-
-hola
-comentarioesats
+a#;c
+++a12_:(#t'simbolo
+12+a 12./ 12.12+1.e-10 #t 

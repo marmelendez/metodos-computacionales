@@ -2,6 +2,7 @@ package Lexer;
 
 import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,9 +62,13 @@ public class Lexer {
         return matched;
     }
 
-    private static boolean esDelimitador(int i, String linea){
+    private static boolean esDelimitador(int i, String linea, int type){
+        ArrayList<Integer> delimitadores = new ArrayList<>(Arrays.asList(39,40,41,42,43,45,47,59,61,94));
+        if (type == 1){
+            delimitadores= new ArrayList<>(Arrays.asList(39,40,41,42,43,47,59,61,94));
+        }
         int code = linea.codePointAt(i);
-        return (code >= 39 && code <= 43) || code == 45 || code == 47 || code == 59 || code == 61 || code == 94;
+        return delimitadores.contains(code);
     }
     /*separar una linea de texto pegada por los diferentes tipos de tokens ahora separada por espacios */
     private static String split(String linea){
@@ -74,18 +79,20 @@ public class Lexer {
             lexema = String.valueOf(linea.charAt(i)); 
             if (lexema.equals("#")){
                 i++;
-                while (i<linea.length() && !esDelimitador(i, linea)){
+                while (i<linea.length() && !esDelimitador(i, linea, 0)){
                     lexema += String.valueOf(linea.charAt(i));
                     i++; 
                 }
                 nvaLinea += lexema + " ";
             }else {
                 for (Tipo tokenTipo : Tipo.values()) {
+                    lexema = String.valueOf(linea.charAt(i));
                     Pattern patron = Pattern.compile(tokenTipo.patron);
                     Matcher matcher = patron.matcher(lexema);
                     if(matcher.find()) {
                         if (tokenTipo == Tipo.OPERADOR || tokenTipo == Tipo.ESPECIAL){
                             nvaLinea += lexema + " ";
+                            i++;
                         } else if (tokenTipo == Tipo.SIMBOLO || tokenTipo == Tipo.COMENTARIO){
                             i++;
                             while (i<linea.length()){
@@ -95,24 +102,27 @@ public class Lexer {
                             nvaLinea += lexema + " ";
                         } else if (tokenTipo == Tipo.VARIABLE){
                             i++;
-                            while (i<linea.length() && !esDelimitador(i, linea)){
+                            while (i<linea.length() && !esDelimitador(i, linea, 0)){
+                                lexema += String.valueOf(linea.charAt(i));
+                                i++; 
+                            }
+                            nvaLinea += lexema + " ";
+                        } else if (tokenTipo == Tipo.NUMERO) {
+                            i++;
+                            while (i<linea.length() && !esDelimitador(i, linea, 1)){
                                 lexema += String.valueOf(linea.charAt(i));
                                 i++; 
                             }
                             nvaLinea += lexema + " ";
                         }
+                        break;
                     } 
                 }
-                i++;
             }
-            //identificar tipos de lexema
-            // linea.codePointAt(i) ascii
         }
         return nvaLinea;
     } 
 
-
-    //agregar un salto de linea al final de cada input y en escribirHTML identificar si \n y agregar br antes 
     private static void lexer(String input, boolean alreadySplit) {
         final StringTokenizer st = new StringTokenizer(input);
 
@@ -134,31 +144,15 @@ public class Lexer {
                     tokens.add(tk);
                     alreadySplit = false;
                 }
-
-                //split false
-                // split
-                //mandarlo a chechar lexer
-
-                //split true (ya se divio previamente)
-                // guardar tokens
-
-                // Token tk = new Token();
-                // tk.setColor("purple");
-                // tk.setValor(palabra);
-                // tokens.add(tk);
-                //checar si el error contiene tokens validos si true evaluar tokens, si no mostrar error
-                // String nvoInput = split(palabra);
-                // System.out.println(nvoInput);
-                // lexer(nvoInput);
             }
         }
     }
 
-    private static void imprimirTokens(){
+    /*private static void imprimirTokens(){
         for (Token token: tokens){
             System.out.printf("%-20s %-20s %n", token.getTipo(), token.getValor());
         }
-    }
+    }*/
 
     private static void lexerAritmetico(String archivo){
         Vector<String> texto = ReadWrite.leerArchivo(archivo);
