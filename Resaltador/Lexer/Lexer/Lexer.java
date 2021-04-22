@@ -12,164 +12,209 @@ import Lexer.Token.Tipo;
 public class Lexer {
     static ArrayList<Token> tokens = new ArrayList<>();
 
-    private static String definirColorStyle(Tipo tipoToken){
-        if(tipoToken.equals(Tipo.NUMERO) || tipoToken.equals(Tipo.NUMERO_EXPONENCIAL)){
+    private static String defineColor(Tipo tipoToken) {
+        if (tipoToken.equals(Tipo.NUMERO) 
+            || tipoToken.equals(Tipo.NUMERO_EXPONENCIAL)) {
             return "skyblue";
-        } else if (tipoToken.equals(Tipo.LOGICO)){
+        } else if (tipoToken.equals(Tipo.LOGICO)) {
             return "darkgoldenrod";
-        } else if (tipoToken.equals(Tipo.SIMBOLO)){
+        } else if (tipoToken.equals(Tipo.SIMBOLO)) {
             return "forestgreen";
-        } else if (tipoToken.equals(Tipo.OPERADOR)){
+        } else if (tipoToken.equals(Tipo.OPERADOR)) {
             return "red";
-        } else if (tipoToken.equals(Tipo.VARIABLE)){
+        } else if (tipoToken.equals(Tipo.VARIABLE)) {
             return "gray";
-        } else if (tipoToken.equals(Tipo.ESPECIAL)){
+        } else if (tipoToken.equals(Tipo.ESPECIAL)) {
             return "coral";
-        } else if (tipoToken.equals(Tipo.COMENTARIO)){
+        } else if (tipoToken.equals(Tipo.COMENTARIO)) {
             return "plum";
         } 
         return "saddlebrown";
     }
 
-    private static boolean matches(String palabra, StringTokenizer st){
+    private static boolean esDelimitador(int i, String linea, int type) {
+        ArrayList<Integer> delimitador = new ArrayList<>(Arrays.asList(39,40,41,42,43,45,47,59,61,94));
+
+        if (type == 1) {
+            delimitador = new ArrayList<>(Arrays.asList(39,40,41,42,43,47,59,61,94));
+        }
+
+        int codigo = linea.codePointAt(i);
+        return delimitador.contains(codigo);
+    }
+
+    private static boolean matches(String palabra, StringTokenizer str) {
         boolean matched = false;
+        
         for (Tipo tokenTipo : Tipo.values()) {
             Pattern patron = Pattern.compile(tokenTipo.patron);
             Matcher matcher = patron.matcher(palabra);
-            if(matcher.find()) {
-                Token tk = new Token();
-                tk.setTipo(tokenTipo);
-                tk.setValor(palabra);
+            
+            if (matcher.find()) {
+                Token tok = new Token();
+                tok.setTipo(tokenTipo);
+                tok.setValor(palabra);
                 matched = true;
-                if (tokenTipo == Tipo.VARIABLE){
+
+                if (tokenTipo == Tipo.VARIABLE) {
                     patron = Pattern.compile(Tipo.PALABRA_RESERVADA.patron);
                     matcher = patron.matcher(palabra);
-                    if(matcher.find()){
-                        tk.setTipo(Tipo.PALABRA_RESERVADA);
-                    } 
-                } else if(tokenTipo == Tipo.COMENTARIO) {
-                    while(!(palabra.equals("\n")) && st.hasMoreTokens()){
-                        palabra = st.nextToken();
-                        tk.setValor(tk.getValor() + " " + palabra);
+
+                    if (matcher.find()) {
+                        tok.setTipo(Tipo.PALABRA_RESERVADA);
                     }
-                    
+                    if (!tokens.isEmpty()) {
+                        Token prevToken = tokens.get(tokens.size() - 1);
+
+                        if (prevToken.getTipo() == Tipo.COMENTARIO) {
+                            tok.setTipo(Tipo.COMENTARIO);
+                        }
+                    }
+                } else if (tokenTipo == Tipo.COMENTARIO) {
+                    while (!(palabra.equals("\n")) && str.hasMoreTokens()) {
+                        palabra = str.nextToken();
+                        tok.setValor(tok.getValor() + " " + palabra);
+                    }
                 } 
-                tk.setColor(definirColorStyle(tk.getTipo()));
-                tokens.add(tk);
+                
+                tok.setColor(defineColor(tok.getTipo()));
+                tokens.add(tok);
                 break;
             }
         }
         return matched;
     }
 
-    private static boolean esDelimitador(int i, String linea, int type){
-        ArrayList<Integer> delimitadores = new ArrayList<>(Arrays.asList(39,40,41,42,43,45,47,59,61,94));
-        if (type == 1){
-            delimitadores= new ArrayList<>(Arrays.asList(39,40,41,42,43,47,59,61,94));
-        }
-        int code = linea.codePointAt(i);
-        return delimitadores.contains(code);
-    }
     /*separar una linea de texto pegada por los diferentes tipos de tokens ahora separada por espacios */
-    private static String split(String linea){
-        String nvaLinea = "";
+    private static String obtenerTokens(String palabra) {
+        String input = "";
         String lexema;
-        int i=0;
-        while (i<linea.length()){
-            lexema = String.valueOf(linea.charAt(i)); 
-            if (lexema.equals("#")){
+        int i = 0;
+
+        while (i < palabra.length()) {
+            lexema = String.valueOf(palabra.charAt(i)); 
+            
+            if (lexema.equals("#")) {
                 i++;
-                while (i<linea.length() && !esDelimitador(i, linea, 0)){
-                    lexema += String.valueOf(linea.charAt(i));
+                while (i < palabra.length() && !esDelimitador(i, palabra, 0)) {
+                    lexema += String.valueOf(palabra.charAt(i));
                     i++; 
                 }
-                nvaLinea += lexema + " ";
-            }else {
+                input += lexema + " ";
+            } else {
+                boolean matched = false;
+
                 for (Tipo tokenTipo : Tipo.values()) {
-                    lexema = String.valueOf(linea.charAt(i));
+                    lexema = String.valueOf(palabra.charAt(i));
                     Pattern patron = Pattern.compile(tokenTipo.patron);
                     Matcher matcher = patron.matcher(lexema);
-                    if(matcher.find()) {
-                        if (tokenTipo == Tipo.OPERADOR || tokenTipo == Tipo.ESPECIAL){
-                            nvaLinea += lexema + " ";
+
+                    if (matcher.find()) {
+                        matched = true;
+
+                        if (tokenTipo == Tipo.OPERADOR 
+                            || tokenTipo == Tipo.ESPECIAL) {
                             i++;
-                        } else if (tokenTipo == Tipo.SIMBOLO || tokenTipo == Tipo.COMENTARIO){
+                        } else if (tokenTipo == Tipo.SIMBOLO 
+                            || tokenTipo == Tipo.COMENTARIO) {
                             i++;
-                            while (i<linea.length()){
-                                lexema += String.valueOf(linea.charAt(i));
+
+                            while (i < palabra.length()) {
+                                lexema += String.valueOf(palabra.charAt(i));
                                 i++;
                             }
-                            nvaLinea += lexema + " ";
-                        } else if (tokenTipo == Tipo.VARIABLE){
+                        } else if (tokenTipo == Tipo.VARIABLE) {
                             i++;
-                            while (i<linea.length() && !esDelimitador(i, linea, 0)){
-                                lexema += String.valueOf(linea.charAt(i));
+
+                            while (i < palabra.length() && !esDelimitador(i, palabra, 0)) {
+                                lexema += String.valueOf(palabra.charAt(i));
                                 i++; 
                             }
-                            nvaLinea += lexema + " ";
                         } else if (tokenTipo == Tipo.NUMERO) {
                             i++;
-                            while (i<linea.length() && !esDelimitador(i, linea, 1)){
-                                lexema += String.valueOf(linea.charAt(i));
+
+                            while (i < palabra.length() && !esDelimitador(i, palabra, 1)) {
+                                lexema += String.valueOf(palabra.charAt(i));
                                 i++; 
                             }
-                            nvaLinea += lexema + " ";
                         }
                         break;
-                    } 
+                    }
+                } if (!matched) {
+                    i++;
+
+                    while (i < palabra.length() && !esDelimitador(i, palabra, 0)) {
+                        lexema += String.valueOf(palabra.charAt(i));
+                        i++; 
+                    }
                 }
+                input += lexema + " ";
             }
         }
-        return nvaLinea;
+        return input;
     } 
 
-    private static void lexer(String input, boolean alreadySplit) {
-        final StringTokenizer st = new StringTokenizer(input);
+    private static void lexer(String input, boolean nvoInput) {
+        StringTokenizer str = new StringTokenizer(input);
 
-        while(st.hasMoreTokens()) {
-            String palabra = st.nextToken();
+        while (str.hasMoreTokens()) {
+            String palabra = str.nextToken();
             boolean matched = false;
 
-            matched = matches(palabra, st);
+            matched = matches(palabra, str);
 
             if (!matched) {
-                if (!alreadySplit){
-                    String nvoInput = split(palabra);
-                    System.out.println(nvoInput);
-                    lexer(nvoInput, true);
+                if (!nvoInput) {
+                    String inputNvo = obtenerTokens(palabra);
+                    
+                    lexer(inputNvo, true);
                 } else {
-                    Token tk = new Token();
-                    tk.setColor("purple");
-                    tk.setValor(palabra);
-                    tokens.add(tk);
-                    alreadySplit = false;
+                    Token tok = new Token();
+
+                    tok.setColor("purple");
+                    tok.setValor(palabra);
+                    tokens.add(tok);
+                    nvoInput = false;
                 }
             }
         }
     }
 
-    /*private static void imprimirTokens(){
-        for (Token token: tokens){
-            System.out.printf("%-20s %-20s %n", token.getTipo(), token.getValor());
+    private static void imprimirTokens(){
+        Tipo tipo;
+        String valor;
+
+        for (Token token: tokens) {
+            tipo = token.getTipo();
+            valor = token.getValor();
+
+            if (!(valor.equals("<br>"))) {
+                if (tipo == null){
+                    System.out.printf("%-20s %-20s %n", "ERROR", valor);
+                } else {
+                    System.out.printf("%-20s %-20s %n", tipo, valor);
+                }
+            }
         }
-    }*/
+    }
 
-    private static void lexerAritmetico(String archivo){
-        Vector<String> texto = ReadWrite.leerArchivo(archivo);
+    private static void lexerAritmetico(String archivo) {
+        Vector<String> texto = Archivos.leerArchivoTXT(archivo);
+        Token saltoLinea = new Token();
 
-        for(String linea: texto){
+        for (String linea : texto) {
             lexer(linea, false);
-            Token saltoLinea = new Token();
             saltoLinea.setValor("<br>");
             tokens.add(saltoLinea);
         }
 
-        //imprimirTokens();
+        imprimirTokens();
+        Archivos.generarArchivoHTML(tokens);
     }
 
     public static void main(String[] args) {
         String nombreArchivo = "expresiones.txt";
+
         lexerAritmetico(nombreArchivo);
-        ReadWrite.escribirArchivoHTML(tokens);
     }   
 }

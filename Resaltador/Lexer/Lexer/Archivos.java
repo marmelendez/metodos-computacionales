@@ -8,28 +8,30 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class ReadWrite {
-    public static Vector<String> leerArchivo(String nombreArchivo){
+public class Archivos {
+
+    public static Vector<String> leerArchivoTXT(String nombreArchivo) {
         Vector<String> texto = new Vector<>();
+
         try {
             File archivo = new File(nombreArchivo);
             Scanner scan = new Scanner(archivo);
-            while (scan.hasNextLine()) { //Mientras exista una línea siguiente
-                texto.add(scan.nextLine()); //Guarda la línea como string en el vector
-            }
-            scan.close();
-        }
 
-        catch (FileNotFoundException e) { //Si recibe la excepción FileNotFoundException le informa al usuario
+            while (scan.hasNextLine()) {
+                texto.add(scan.nextLine()); 
+            } 
+
+            scan.close();
+        } catch (FileNotFoundException e) { 
             System.out.println("Error, no se encontro el archivo con ese nombre");
             e.printStackTrace();
         }
+
         return texto;
     }
 
-    public static void escribirArchivoHTML(ArrayList<Token> tokens){
-        try {
-            String inicioHTML = """
+    public static void generarArchivoHTML(ArrayList<Token> tokens) {
+        String inicioHTML = """
             <!DOCTYPE html>
             <html lang= "en">
             <head> 
@@ -45,18 +47,26 @@ public class ReadWrite {
                 </style>
             </head>
             <body>""";
-            String finalHTML = "\n</body>\n</html>";
+        String finalHTML = "\n</body>\n</html>";
+
+        try {
             FileWriter escritor = new FileWriter("resaltador.html");
+
             escritor.write(inicioHTML);
-            for (Token token: tokens){
-                if (token.getValor().equals("<br>")){
-                    escritor.write(token.getValor());
-                } else if(token.getColor().equals("purple")){
-                    escritor.write("\n\t<span style=\"color: "+ token.getColor() +"; text-decoration: underline\">" + token.getValor()  + "</span>");
-                } else{
-                    escritor.write("\n\t<span style=\"color:"+ token.getColor() +"\">" + token.getValor()  + "</span>");
+
+            for (Token token : tokens) {
+                String valor = token.getValor();
+                String color = token.getColor();
+
+                if (valor.equals("<br>")) {
+                    escritor.write(valor);
+                } else if (color.equals("purple")) {
+                    escritor.write("\n\t<span style=\"color:" + color + "; text-decoration: underline\">" + valor  + "</span>");
+                } else {
+                    escritor.write("\n\t<span style=\"color:" + color + "\">" + valor  + "</span>");
                 }
             }
+
             escritor.write(finalHTML);
             escritor.close();
         } catch (IOException e) {
