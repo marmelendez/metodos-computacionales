@@ -33,7 +33,7 @@ public class Token {
         NUMERO("^[0-9]+[\\.]?[0-9]*$"), 
         NUMERO_EXPONENCIAL("^[0-9]+\\.?[0-9]*[E|e]-?[0-9][0-9]*$"),
         LOGICO("^#[t|f]$"), 
-        SIMBOLO("^'[A-Za-z]*$"), 
+        SIMBOLO("^'[\\w|\\s|[^\\w]]*$"), //cambiar
         OPERADOR("^[*|/|+|-|[-^]|[-=]]$"), 
         VARIABLE("^[A-Za-z]+\\w*$"), 
         ESPECIAL("^[(|)]$"), 

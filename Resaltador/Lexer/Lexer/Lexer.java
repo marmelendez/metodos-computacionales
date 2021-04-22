@@ -85,7 +85,6 @@ public class Lexer {
         return matched;
     }
 
-    /*separar una linea de texto pegada por los diferentes tipos de tokens ahora separada por espacios */
     private static String obtenerTokens(String palabra) {
         String input = "";
         String lexema;
