@@ -1,10 +1,5 @@
 package Lexer;
 
-import java.io.File; 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner; 
 import java.util.Vector;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -15,54 +10,6 @@ import Lexer.Token.Tipo;
 
 public class Lexer {
     static ArrayList<Token> tokens = new ArrayList<>();
-
-    private static Vector<String> leerArchivo(String nombreArchivo){
-        Vector<String> texto = new Vector<>();
-        try {
-            File archivo = new File(nombreArchivo);
-            Scanner scan = new Scanner(archivo);
-            while (scan.hasNextLine()) { //Mientras exista una línea siguiente
-                texto.add(scan.nextLine()); //Guarda la línea como string en el vector
-            }
-            scan.close();
-        }
-
-        catch (FileNotFoundException e) { //Si recibe la excepción FileNotFoundException le informa al usuario
-            System.out.println("Error, no se encontro el archivo con ese nombre");
-            e.printStackTrace();
-        }
-        return texto;
-    }
-
-    private static void escribirArchivoHTML(){
-        try {
-            String inicioHTML = """
-            <!DOCTYPE html>
-            <html lang= "en">
-            <head> 
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Resaltador lexico</title>
-            </head>
-            <body>""";
-            String finalHTML = "\n</body>\n</html>";
-            FileWriter escritor = new FileWriter("resaltador.html");
-            escritor.write(inicioHTML);
-            for (Token token: tokens){
-                if (token.getValor().equals("<br>")){
-                    escritor.write(token.getValor());
-                } else{
-                    escritor.write("\n\t<span style=\"color:"+ token.getColor() +"\">" + token.getValor()  + "</span>");
-                }
-            }
-            escritor.write(finalHTML);
-            escritor.close();
-        } catch (IOException e) {
-            System.out.println("Error, no se pudo generar archivo html");
-            e.printStackTrace();
-        }
-    }
 
     private static String definirColorStyle(Tipo tipoToken){
         if(tipoToken.equals(Tipo.NUMERO) || tipoToken.equals(Tipo.NUMERO_EXPONENCIAL)){
@@ -79,10 +26,8 @@ public class Lexer {
             return "coral";
         } else if (tipoToken.equals(Tipo.COMENTARIO)){
             return "plum";
-        } else if (tipoToken.equals(Tipo.PALABRA_RESERVADA)){
-            return "saddlebrown";
-        }
-        return "purple";
+        } 
+        return "saddlebrown";
     }
 
     private static boolean matches(String palabra, StringTokenizer st){
@@ -116,27 +61,59 @@ public class Lexer {
         return matched;
     }
 
+    private static boolean esDelimitador(int i, String linea){
+        int code = linea.codePointAt(i);
+        return (code >= 39 && code <= 43) || code == 45 || code == 47 || code == 59 || code == 61 || code == 94;
+    }
     /*separar una linea de texto pegada por los diferentes tipos de tokens ahora separada por espacios */
     private static String split(String linea){
         String nvaLinea = "";
-        // String lexema = "";
-        // int estado = 0;
+        String lexema;
         int i=0;
         while (i<linea.length()){
-            /*lexema = linea.charAt(i);
+            lexema = String.valueOf(linea.charAt(i)); 
+            if (lexema.equals("#")){
+                i++;
+                while (i<linea.length() && !esDelimitador(i, linea)){
+                    lexema += String.valueOf(linea.charAt(i));
+                    i++; 
+                }
+                nvaLinea += lexema + " ";
+            }else {
+                for (Tipo tokenTipo : Tipo.values()) {
+                    Pattern patron = Pattern.compile(tokenTipo.patron);
+                    Matcher matcher = patron.matcher(lexema);
+                    if(matcher.find()) {
+                        if (tokenTipo == Tipo.OPERADOR || tokenTipo == Tipo.ESPECIAL){
+                            nvaLinea += lexema + " ";
+                        } else if (tokenTipo == Tipo.SIMBOLO || tokenTipo == Tipo.COMENTARIO){
+                            i++;
+                            while (i<linea.length()){
+                                lexema += String.valueOf(linea.charAt(i));
+                                i++;
+                            }
+                            nvaLinea += lexema + " ";
+                        } else if (tokenTipo == Tipo.VARIABLE){
+                            i++;
+                            while (i<linea.length() && !esDelimitador(i, linea)){
+                                lexema += String.valueOf(linea.charAt(i));
+                                i++; 
+                            }
+                            nvaLinea += lexema + " ";
+                        }
+                    } 
+                }
+                i++;
+            }
             //identificar tipos de lexema
-            linea.codePointAt(i) ascii
-
-
-            nvaLinea += lexema + " ";*/
-            i++;
+            // linea.codePointAt(i) ascii
         }
         return nvaLinea;
-    }
+    } 
 
 
     //agregar un salto de linea al final de cada input y en escribirHTML identificar si \n y agregar br antes 
-    private static void lexer(String input) {
+    private static void lexer(String input, boolean alreadySplit) {
         final StringTokenizer st = new StringTokenizer(input);
 
         while(st.hasMoreTokens()) {
@@ -146,33 +123,59 @@ public class Lexer {
             matched = matches(palabra, st);
 
             if (!matched) {
-                //checar si el error contiene tokens validos
-                String nvoInput = split(palabra);
-                System.out.println(nvoInput);
-                lexer(nvoInput);
-                //System.out.printf("%-20s %-20s %n", "ERROR", palabra);
+                if (!alreadySplit){
+                    String nvoInput = split(palabra);
+                    System.out.println(nvoInput);
+                    lexer(nvoInput, true);
+                } else {
+                    Token tk = new Token();
+                    tk.setColor("purple");
+                    tk.setValor(palabra);
+                    tokens.add(tk);
+                    alreadySplit = false;
+                }
+
+                //split false
+                // split
+                //mandarlo a chechar lexer
+
+                //split true (ya se divio previamente)
+                // guardar tokens
+
+                // Token tk = new Token();
+                // tk.setColor("purple");
+                // tk.setValor(palabra);
+                // tokens.add(tk);
+                //checar si el error contiene tokens validos si true evaluar tokens, si no mostrar error
+                // String nvoInput = split(palabra);
+                // System.out.println(nvoInput);
+                // lexer(nvoInput);
             }
         }
     }
 
-    private static void lexerAritmetico(String archivo){
-        Vector<String> texto = leerArchivo(archivo);
-
-        for(String linea: texto){
-            lexer(linea);
-            Token saltoLinea = new Token();
-            saltoLinea.setValor("<br>");
-            tokens.add(saltoLinea);
-        }
-
+    private static void imprimirTokens(){
         for (Token token: tokens){
             System.out.printf("%-20s %-20s %n", token.getTipo(), token.getValor());
         }
     }
 
+    private static void lexerAritmetico(String archivo){
+        Vector<String> texto = ReadWrite.leerArchivo(archivo);
+
+        for(String linea: texto){
+            lexer(linea, false);
+            Token saltoLinea = new Token();
+            saltoLinea.setValor("<br>");
+            tokens.add(saltoLinea);
+        }
+
+        //imprimirTokens();
+    }
+
     public static void main(String[] args) {
         String nombreArchivo = "expresiones.txt";
         lexerAritmetico(nombreArchivo);
-        escribirArchivoHTML();
+        ReadWrite.escribirArchivoHTML(tokens);
     }   
 }
