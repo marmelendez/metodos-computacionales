@@ -1,5 +1,12 @@
-/** 
+/**
+* <h1>Resaltador de sintáxis</h1>
+* Este programa identifica los tipos de token que contiene un archivo de texto 
+* imprime el valor y tipo de cada token identificado 
+* y genera un archivo html con cada tipo de token identificado por un color
 *
+* @author  Lizbeth Maribel Melendez Delgado 
+* @author  Gerardo Novelo de Anda
+* @version 1.0, 25/04/21
 */
 
 package Lexer;
@@ -16,8 +23,11 @@ public class Lexer {
     static ArrayList<Token> tokens = new ArrayList<>();
     static String lineaTexto;
 
-    /*
-    *
+    /**
+    * Define el color que tendra el token 
+    * (cuando se genere el archivo html) de acuerdo a su tipo
+    * @param    tipoToken Representa un Tipo válido del token   
+    * @return   String    Devuelve el color del token con base a su tipo
     */
     private static String definirColor(Tipo tipoToken) {
         if (tipoToken.equals(Tipo.NUMERO)  
@@ -39,17 +49,66 @@ public class Lexer {
         return "saddlebrown";
     }
 
+    /**
+    * Antes de agregar un token al arreglo de tokens, identifica
+    * si antes de esa palabra hay espacio(s) en la línea del 
+    * archivo de texto donde se encuentra, si es cierto agrega 
+    * primero al arreglo un token que representa ese espacio
+    * @param    palabra Es en este caso el valor del token identificado
+    * @return   void    Devuelve nada
+    */
+    private static void agregarEspacios(String palabra) {
+        int index = lineaTexto.indexOf(palabra);
+        Token tok = new Token();
+        tok.setValor("espacio");
+        tok.setEstilo("<span>&nbsp<span>");
+
+        for (int i = index - 1 ; i >= 0; i--) { //Evalua cada caracter de una linea del texto a partir del anterior a donde inicia la palabra
+            if (lineaTexto.charAt(i) == ' ') { 
+                tokens.add(tok);
+            } else { //Si encuentra un caracter que no se espacio se termina el ciclo
+                break;
+            }
+        }
+    }
+
+    /**
+    * Indica si el siguiente caracter en una palabra del archivo es un 
+    * delimitador(separa tokens) o no, si lo es se separa la palabra, 
+    * si no lo es se sigue tomando como un sola
+    * @param    i       Indice del siguiente caracter a evaluar
+    * @param    linea   Palabra completa donde se encuentra el caracter
+    * @param    type    Tipo de token, con éste se define los delimitadores
+    *                   0 corresponde a delimitadores para variables, errores y lógicos
+    *                   1 corresponde a delimitadores para numeros
+    * @return   boolean Devuelve si el caracter que se encuentra 
+    *                   en el indice i de la linea es delimitador o no
+    */
     private static boolean esDelimitador(int i, String linea, int type) {
+        int codigo = linea.codePointAt(i);
         ArrayList<Integer> delimitador = new ArrayList<>(Arrays.asList(39,40,41,42,43,45,47,59,61,94)); //Arreglo de numeros que representa el codigo ASCII de los simbolos delimitadores
 
         if (type == 1) { //Tipo 1 es representa los numeros
             delimitador = new ArrayList<>(Arrays.asList(39,40,41,42,43,47,59,61,94));
         }
 
-        int codigo = linea.codePointAt(i);
         return delimitador.contains(codigo); //evalua si el codigo ASCII del simbolo en indice i de linea es delimitador
     }
 
+    /**
+    * Indica cuando una palabra coincide con un patron definido 
+    * en el enum Tipo dentro de la clase Token
+    * Si hace match define el valor, tipo, color (con función) y estilo del Token
+    * evalua si hay espacios antes de la palabra (con función) y 
+    * finalmente agrega el Token al arreglo de Tokens
+    * @param    palabra Palabra del archivo de texto con la cual 
+    *                    se hara match con el patrón de Tipo
+    * @param    str     Contiene todas las palabras de una linea del archivo de texto
+    * @return   boolean Si la palabra hizo match con algun patrón o no.
+    * @see      Token
+    * @see      #definirColor(Tipo)
+    * @see      #agregarEspacios(String)
+    */
     private static boolean matchesPatron(String palabra, StringTokenizer str) {
         boolean matched = false;
         
@@ -95,6 +154,16 @@ public class Lexer {
         return matched;
     }
 
+    /**
+    * Si una palabra no hizo match con algún patron de Tipo en 
+    * la función matchesPatron se manda a llamar a esta función 
+    * antes de definir esa palabra como error. Esta funcion se encarga 
+    * de separar los posibles tokens válidos de la palabra por espacios.
+    * @param    palabra Palabra que no hizo match con ningún patrón de Tipo
+    * @return   String  Devuelve un string que contiene la misma palabra pero
+    *                   ahora separadando los tokens dentro de esta por espacios
+    * @see      #matchesPatron(String, StringTokenizer)
+    */
     private static String obtenerTokens(String palabra) {
         String input = "";
         String lexema;
@@ -151,7 +220,9 @@ public class Lexer {
                         }
                         break;
                     }
-                } if (!matched) { 
+                } 
+                
+                if (!matched) { 
                     i++;
 
                     while (i < palabra.length() && !esDelimitador(i, palabra, 0)) { //Añade cada caracter a lexema hasta llegar a un delimitador o al final de la palabra
@@ -159,29 +230,27 @@ public class Lexer {
                         i++; 
                     }
                 }
+
                 input += lexema + " "; //Agrega el lexema que se genero al nuevo input que evaluara la funcion matchesPatron
             }
         }
         return input;
     } 
 
-    private static void agregarEspacios(String palabra) {
-        int index = lineaTexto.indexOf(palabra);
-        Token tok = new Token();
-        tok.setValor("espacio");
-        tok.setEstilo("<span>&nbsp<span>");
-
-        for (int i = index - 1 ; i >= 0; i--) { //Evalua cada caracter de una linea del texto a partir del anterior a donde inicia la palabra
-
-            if (lineaTexto.charAt(i) == ' ') { 
-                tokens.add(tok);
-            } else { //Si encuentra un caracter que no se espacio se termina el ciclo
-                break;
-            }
-
-        }
-    }
-
+    /**
+    * Se encarga de separar el input por espacios y evaluar si cada 
+    * palabra del input hace match con un patrón de Tipo con la funcion 
+    * matchesPatron. Si no hace match, obtiene un nuevo input y se vuelve 
+    * a evaluar, si nuevamente no hace match se define un token como error
+    * @param    input       Representa una linea del archivo de texto
+    * @param    nvoInput    Nos indica false si el input se mando a llamar desde la 
+    *                       funcion lexerAritmetico, o true si se mando a llamar
+    *                       despues de separar una palabra en la funcion obtenerTokens
+    * @return   void        Devuelve nada  
+    * @see      #matchesPatron(String, StringTokenizer)
+    * @see      #lexerAritmetico(String)
+    * @see      #obtenerTokens(String)
+    */
     private static void lexer(String input, boolean nvoInput) {
         StringTokenizer str = new StringTokenizer(input);
 
@@ -211,11 +280,16 @@ public class Lexer {
         }
     }
 
+    /**
+    * Imprime los tokens identificados y almacenados en el arreglo de Tokens
+    * solo si el token es un espacio o salto de linea no lo imprime
+    * @return void Devuelve nada
+    */
     private static void imprimirTokens() {
         Tipo tipo;
         String valor;
 
-        for (Token token: tokens) {
+        for (Token token : tokens) {
             tipo = token.getTipo();
             valor = token.getValor();
 
@@ -229,6 +303,19 @@ public class Lexer {
         }
     }
 
+    /**
+    * Esta función manda a leer el archivo de texto y lo guarda en un vector
+    * y por cada elemento de vector se llama a la funcion lexer, además agrega 
+    * un token de salto de linea cada vez que termina de llamar a la funcion lexer
+    * Al terminar de identificar los tokens llama a la funcion imprimirTokens y
+    * despues manda a generar el archivo HTML
+    * @param    archivo Nombre del archivo de texto a leer
+    * @return   void    Devuelve nada
+    * @see      #lexer(String, boolean)
+    * @see      #imprimirTokens()
+    * @see      Archivo#leerArchivoTXT(String)
+    * @see      Archivo#generarArchivoHTML(java.util.List)
+    */
     private static void lexerAritmetico(String archivo) {
         Vector<String> texto = Archivo.leerArchivoTXT(archivo); //Lee archivo .txt
         /* se crea token de salto de linea */
@@ -246,6 +333,12 @@ public class Lexer {
         Archivo.generarArchivoHTML(tokens); //Genera archivo .html
     }
 
+    /**
+    * Esta es la función principal donde se define el nombre del archivo 
+    * de texto y se manda a llamar a la funcion de lexerArtimetico
+    * @param  args  Argumentos que se pasan en terminal
+    * @return void  Devuelve nada
+    */
     public static void main(String[] args) {
         String nombreArchivo = "expresiones.txt";
 

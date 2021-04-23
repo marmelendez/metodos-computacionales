@@ -1,5 +1,12 @@
-/** 
+/**
+* <h1>Almacenar propiedades y metodos de Token</h1>
+* La clase Token contiene las propiedades principales de un token, 
+* la definición de cada tipo de token mediante expresiones regulares
+* y los métodos de setters y getters.
 *
+* @author  Lizbeth Maribel Melendez Delgado 
+* @author  Gerardo Novelo de Anda
+* @version 1.0, 25/04/21
 */
 
 package Lexer;

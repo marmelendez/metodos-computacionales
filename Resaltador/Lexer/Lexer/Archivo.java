@@ -1,13 +1,12 @@
 /**
-* <h1>Programa para leer y generar archivos</h1>
+* <h1>Leer y generar archivos</h1>
 * El programa Archivos cuenta con dos funciones:
 * La primera lee y guarda un archivo de texto (.txt)
 * La segunda genera un archivo html (.html)
 *
 * @author  Lizbeth Maribel Melendez Delgado 
 * @author  Gerardo Novelo de Anda
-* @version 1.0
-* @since   2021-25-04
+* @version 1.0, 25/04/21
 */
 
 package Lexer;
@@ -52,7 +51,7 @@ public class Archivo {
     /**
     * Esta funcion guarda los estilos de cada token que se encuentran en una lista en un archivo html
     * @param tokens Lista de tokens, si esta vacia solo genera un archivo.html con la estructura principal de un HTML
-    * @return void Devuelve nada
+    * @return void  Devuelve nada
     */
     public static void generarArchivoHTML(List<Token> tokens) {
         String inicioHTML = """
