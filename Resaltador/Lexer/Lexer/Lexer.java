@@ -13,7 +13,7 @@ public class Lexer {
     static ArrayList<Token> tokens = new ArrayList<>();
     static String lineaTexto;
 
-    private static String defineColor(Tipo tipoToken) {
+    private static String definirColor(Tipo tipoToken) {
         if (tipoToken.equals(Tipo.NUMERO) 
             || tipoToken.equals(Tipo.NUMERO_EXPONENCIAL)) {
             return "skyblue";
@@ -78,7 +78,8 @@ public class Lexer {
                     }
                 } 
                 
-                tok.setColor(defineColor(tok.getTipo()));
+                tok.setColor(definirColor(tok.getTipo()));
+                tok.setEstilo("<span style=\"color:" + tok.getColor() + "\">" + tok.getValor()  + "</span>");
                 agregarEspacios(palabra);
                 tokens.add(tok);
                 break;
@@ -158,7 +159,8 @@ public class Lexer {
     private static void agregarEspacios(String palabra) {
         int index = lineaTexto.indexOf(palabra);
         Token tok = new Token();
-        tok.setValor("<span>&nbsp<span>");
+        tok.setValor("espacio");
+        tok.setEstilo("<span>&nbsp<span>");
 
         System.out.println(palabra);
 
@@ -190,6 +192,7 @@ public class Lexer {
                     Token tok = new Token();
 
                     tok.setColor("purple");
+                    tok.setEstilo("<span style=\"color:" + tok.getColor() + "; text-decoration: underline\">" + tok.getValor()  + "</span>");
                     tok.setValor(palabra);
 
                     agregarEspacios(palabra);
@@ -226,7 +229,8 @@ public class Lexer {
             lineaTexto = linea;
             System.out.println(linea);
             lexer(linea, false);
-            saltoLinea.setValor("<br>");
+            saltoLinea.setValor("salto");
+            saltoLinea.setEstilo("<br> \n");
             tokens.add(saltoLinea);
         }
 

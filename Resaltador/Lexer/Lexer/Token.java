@@ -4,6 +4,7 @@ public class Token {
     private Tipo tipo;
     private String valor;
     private String color;
+    private String estilo;
 
     public Tipo getTipo() {
         return this.tipo;
@@ -16,6 +17,10 @@ public class Token {
     public String getColor() {
         return color;
     }
+
+    public String getEstilo() {
+        return estilo;
+    }
     
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
@@ -27,6 +32,10 @@ public class Token {
     
     public void setColor(String color) {  
         this.color = color;
+    }
+
+    public void setEstilo(String estilo) {
+        this.estilo = estilo;
     }
 
     enum Tipo {
