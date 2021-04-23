@@ -1,5 +1,13 @@
-/** 
+/**
+* <h1>Programa para leer y generar archivos</h1>
+* El programa Archivos cuenta con dos funciones:
+* La primera lee y guarda un archivo de texto (.txt)
+* La segunda genera un archivo html (.html)
 *
+* @author  Lizbeth Maribel Melendez Delgado 
+* @author  Gerardo Novelo de Anda
+* @version 1.0
+* @since   2021-25-04
 */
 
 package Lexer;
@@ -8,13 +16,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
-/** */
 public class Archivo {
 
+    /**
+    * Esta funcion lee un archivo de texto y lo guarda en un vector de strings
+    * @param nombreArchivo  String que representa el nombre del archivo a leer
+    *                       si hay algun error en el nombre muestra una excepción
+    * @return Vector<String> Devuelve un vector que contiene cada linea del archivo de texto,
+    *                       si no puede leer un archivo devuelve un vector vacio.
+    */
     public static Vector<String> leerArchivoTXT(String nombreArchivo) {
         Vector<String> texto = new Vector<>();
 
@@ -35,7 +49,12 @@ public class Archivo {
         return texto;
     }
 
-    public static void generarArchivoHTML(ArrayList<Token> tokens) {
+    /**
+    * Esta funcion guarda los estilos de cada token que se encuentran en una lista en un archivo html
+    * @param tokens Lista de tokens, si esta vacia solo genera un archivo.html con la estructura principal de un HTML
+    * @return void Devuelve nada
+    */
+    public static void generarArchivoHTML(List<Token> tokens) {
         String inicioHTML = """
             <!DOCTYPE html>
             <html lang= "en">
