@@ -42,12 +42,15 @@ public class Archivos {
                 <style> 
                 body {
                     font-family: Courier New, Arial;
-                    font-size: 24px;
+                    font-size: 18px;
                 }
                 </style>
             </head>
-            <body>""";
+            <body>
+            """;
         String finalHTML = "\n</body>\n</html>";
+        String valor;
+        String color;
 
         try {
             FileWriter escritor = new FileWriter("resaltador.html");
@@ -55,15 +58,17 @@ public class Archivos {
             escritor.write(inicioHTML);
 
             for (Token token : tokens) {
-                String valor = token.getValor();
-                String color = token.getColor();
+                valor = token.getValor();
+                color = token.getColor();
 
                 if (valor.equals("<br>")) {
+                    escritor.write(valor + "\n");
+                } else if (valor.equals("<span>&nbsp<span>")) {
                     escritor.write(valor);
                 } else if (color.equals("purple")) {
-                    escritor.write("\n\t<span style=\"color:" + color + "; text-decoration: underline\">" + valor  + "</span>");
+                    escritor.write("<span style=\"color:" + color + "; text-decoration: underline\">" + valor  + "</span>");
                 } else {
-                    escritor.write("\n\t<span style=\"color:" + color + "\">" + valor  + "</span>");
+                    escritor.write("<span style=\"color:" + color + "\">" + valor  + "</span>");
                 }
             }
 

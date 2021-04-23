@@ -11,6 +11,7 @@ import Lexer.Token.Tipo;
 
 public class Lexer {
     static ArrayList<Token> tokens = new ArrayList<>();
+    static String lineaTexto;
 
     private static String defineColor(Tipo tipoToken) {
         if (tipoToken.equals(Tipo.NUMERO) 
@@ -71,13 +72,14 @@ public class Lexer {
                         }
                     }
                 } else if (tokenTipo == Tipo.COMENTARIO) {
-                    while (!(palabra.equals("\n")) && str.hasMoreTokens()) {
+                    while (!(palabra.equals("\n")) && str.hasMoreTokens()) { //str.hasMoreTokens()
                         palabra = str.nextToken();
                         tok.setValor(tok.getValor() + " " + palabra);
                     }
                 } 
                 
                 tok.setColor(defineColor(tok.getTipo()));
+                agregarEspacios(palabra);
                 tokens.add(tok);
                 break;
             }
@@ -153,6 +155,23 @@ public class Lexer {
         return input;
     } 
 
+    private static void agregarEspacios(String palabra) {
+        int index = lineaTexto.indexOf(palabra);
+        Token tok = new Token();
+        tok.setValor("<span>&nbsp<span>");
+
+        System.out.println(palabra);
+
+        for ( int i = index - 1 ; i >= 0; i--) {
+           System.out.println("char en index  " + lineaTexto.charAt(i));
+            if (lineaTexto.charAt(i) == ' ') {
+                tokens.add(tok);
+            } else {
+                break;
+            }
+        }
+    }
+
     private static void lexer(String input, boolean nvoInput) {
         StringTokenizer str = new StringTokenizer(input);
 
@@ -161,7 +180,7 @@ public class Lexer {
             boolean matched = false;
 
             matched = matches(palabra, str);
-
+            
             if (!matched) {
                 if (!nvoInput) {
                     String inputNvo = obtenerTokens(palabra);
@@ -172,6 +191,8 @@ public class Lexer {
 
                     tok.setColor("purple");
                     tok.setValor(palabra);
+
+                    agregarEspacios(palabra);
                     tokens.add(tok);
                     nvoInput = false;
                 }
@@ -187,7 +208,7 @@ public class Lexer {
             tipo = token.getTipo();
             valor = token.getValor();
 
-            if (!(valor.equals("<br>"))) {
+            if (!(valor.equals("<br>")) && !(valor.equals("<span>&nbsp<span>"))) {
                 if (tipo == null){
                     System.out.printf("%-20s %-20s %n", "ERROR", valor);
                 } else {
@@ -202,6 +223,8 @@ public class Lexer {
         Token saltoLinea = new Token();
 
         for (String linea : texto) {
+            lineaTexto = linea;
+            System.out.println(linea);
             lexer(linea, false);
             saltoLinea.setValor("<br>");
             tokens.add(saltoLinea);
