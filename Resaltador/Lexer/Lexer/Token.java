@@ -1,5 +1,5 @@
 /**
-* <h1>Almacenar propiedades y metodos de Token</h1>
+* <h1>Almacenar propiedades y métodos de Token</h1>
 * La clase Token contiene las propiedades principales de un token, 
 * la definición de cada tipo de token mediante expresiones regulares
 * y los métodos de setters y getters.
@@ -52,6 +52,7 @@ public class Token {
         this.estilo = estilo;
     }
 
+    /* Expresiones regulares de cada Tipo de token */
     enum Tipo {
         NUMERO("^[0-9]+[\\.]?[0-9]*$"), 
         NUMERO_EXPONENCIAL("^[0-9]+\\.?[0-9]*[E|e]-?[0-9][0-9]*$"),

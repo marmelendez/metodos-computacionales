@@ -1,8 +1,8 @@
 /**
 * <h1>Resaltador de sintáxis</h1>
-* Este programa identifica los tipos de token que contiene un archivo de texto 
-* imprime el valor y tipo de cada token identificado 
-* y genera un archivo html con cada tipo de token identificado por un color
+* Este programa identifica los tipos de token que contiene un archivo 
+* de texto, imprime el valor y tipo de cada token identificado y genera 
+* un archivo html con cada tipo de token identificado por un color
 *
 * @author  Lizbeth Maribel Melendez Delgado 
 * @author  Gerardo Novelo de Anda
@@ -24,8 +24,7 @@ public class Lexer {
     static String lineaTexto;
 
     /**
-    * Define el color que tendra el token 
-    * (cuando se genere el archivo html) de acuerdo a su tipo
+    * Define el color del token (cuando se genere el archivo html) de acuerdo a su tipo
     * @param    tipoToken Representa un Tipo válido del token   
     * @return   String    Devuelve el color del token con base a su tipo
     */
@@ -50,11 +49,9 @@ public class Lexer {
     }
 
     /**
-    * Antes de agregar un token al arreglo de tokens, identifica
-    * si antes de esa palabra hay espacio(s) en la línea del 
-    * archivo de texto donde se encuentra, si es cierto agrega 
-    * primero al arreglo un token que representa ese espacio
-    * @param    palabra Es en este caso el valor del token identificado
+    * Identifica si antes de esa palabra hay espacio(s) en la línea del archivo de texto 
+    * donde se encuentra, si es cierto agrega al arreglo un token que representa ese espacio
+    * @param    palabra El valor del token identificado
     * @return   void    Devuelve nada
     */
     private static void agregarEspacios(String palabra) {
@@ -73,16 +70,15 @@ public class Lexer {
     }
 
     /**
-    * Indica si el siguiente caracter en una palabra del archivo es un 
-    * delimitador(separa tokens) o no, si lo es se separa la palabra, 
-    * si no lo es se sigue tomando como un sola
-    * @param    i       Indice del siguiente caracter a evaluar
-    * @param    linea   Palabra completa donde se encuentra el caracter
-    * @param    type    Tipo de token, con éste se define los delimitadores
+    * Indica si el siguiente carácter en una palabra es un delimitador(separa tokens)
+    * si lo es se separa la palabra, si no lo es se sigue tomando como un sola
+    * @param    i       Indice del siguiente carácter a evaluar
+    * @param    linea   Palabra completa donde se encuentra el carácter
+    * @param    type    Tipo de token, con este se define los delimitadores
     *                   0 corresponde a delimitadores para variables, errores y lógicos
-    *                   1 corresponde a delimitadores para numeros
-    * @return   boolean Devuelve si el caracter que se encuentra 
-    *                   en el indice i de la linea es delimitador o no
+    *                   1 corresponde a delimitadores para números
+    * @return   boolean Devuelve si el carácter que se encuentra en el índice i 
+    *                   de la linea es delimitador o no
     */
     private static boolean esDelimitador(int i, String linea, int type) {
         int codigo = linea.codePointAt(i);
@@ -96,14 +92,12 @@ public class Lexer {
     }
 
     /**
-    * Indica cuando una palabra coincide con un patron definido 
-    * en el enum Tipo dentro de la clase Token
-    * Si hace match define el valor, tipo, color (con función) y estilo del Token
-    * evalua si hay espacios antes de la palabra (con función) y 
-    * finalmente agrega el Token al arreglo de Tokens
+    * Indica cuando una palabra coincide con un patrón definido en el enum Tipo 
+    * Si hace match define el valor, tipo, color y estilo del Token, evalua 
+    * si hay espacios antes de la palabra y agrega el Token al arreglo de Tokens
     * @param    palabra Palabra del archivo de texto con la cual 
-    *                    se hara match con el patrón de Tipo
-    * @param    str     Contiene todas las palabras de una linea del archivo de texto
+    *                   se hará match con el patrón de Tipo
+    * @param    str     Contiene todas las palabras de una línea del archivo de texto
     * @return   boolean Si la palabra hizo match con algun patrón o no.
     * @see      Token
     * @see      #definirColor(Tipo)
@@ -155,13 +149,11 @@ public class Lexer {
     }
 
     /**
-    * Si una palabra no hizo match con algún patron de Tipo en 
-    * la función matchesPatron se manda a llamar a esta función 
-    * antes de definir esa palabra como error. Esta funcion se encarga 
-    * de separar los posibles tokens válidos de la palabra por espacios.
+    * Se llama esta función cuando matchesPatron regrese false. Esta función se 
+    * encarga de separar los posibles tokens válidos de la palabra por espacios.
     * @param    palabra Palabra que no hizo match con ningún patrón de Tipo
     * @return   String  Devuelve un string que contiene la misma palabra pero
-    *                   ahora separadando los tokens dentro de esta por espacios
+    *                   ahora separadando los tokens por espacios
     * @see      #matchesPatron(String, StringTokenizer)
     */
     private static String obtenerTokens(String palabra) {
@@ -238,18 +230,17 @@ public class Lexer {
     } 
 
     /**
-    * Se encarga de separar el input por espacios y evaluar si cada 
-    * palabra del input hace match con un patrón de Tipo con la funcion 
-    * matchesPatron. Si no hace match, obtiene un nuevo input y se vuelve 
-    * a evaluar, si nuevamente no hace match se define un token como error
-    * @param    input       Representa una linea del archivo de texto
+    * Separa el input por espacios y evalua si cada palabra del input hace match 
+    * con un patrón de Tipo con la funcion matchesPatron. Si no hace match, obtiene 
+    * un nuevo input y se vuelve a evaluar, o se define el token como error
+    * @param    input       Representa una línea del archivo de texto
     * @param    nvoInput    Nos indica false si el input se mando a llamar desde la 
-    *                       funcion lexerAritmetico, o true si se mando a llamar
-    *                       despues de separar una palabra en la funcion obtenerTokens
+    *                       función lexerAritmetico, o true si se mando a llamar
+    *                       después de separar una palabra en la función obtenerTokens
     * @return   void        Devuelve nada  
     * @see      #matchesPatron(String, StringTokenizer)
     * @see      #lexerAritmetico(String)
-    * @see      #obtenerTokens(String)
+    * @see      #obtenerTokens(String)  
     */
     private static void lexer(String input, boolean nvoInput) {
         StringTokenizer str = new StringTokenizer(input);
@@ -281,8 +272,8 @@ public class Lexer {
     }
 
     /**
-    * Imprime los tokens identificados y almacenados en el arreglo de Tokens
-    * solo si el token es un espacio o salto de linea no lo imprime
+    * Imprime los tokens identificados y almacenados en el arreglo de Tokens 
+    * si el token no es un espacio o salto de linea
     * @return void Devuelve nada
     */
     private static void imprimirTokens() {
@@ -304,11 +295,9 @@ public class Lexer {
     }
 
     /**
-    * Esta función manda a leer el archivo de texto y lo guarda en un vector
-    * y por cada elemento de vector se llama a la funcion lexer, además agrega 
-    * un token de salto de linea cada vez que termina de llamar a la funcion lexer
-    * Al terminar de identificar los tokens llama a la funcion imprimirTokens y
-    * despues manda a generar el archivo HTML
+    * Manda a leer el archivo de texto y guarda resultado en un vector. Por cada elemento del 
+    * vector se llama a la funcion lexer y agrega un token de salto de linea. Al terminar de 
+    * identificar los tokens llama a la funcion imprimirTokens y manda a generar el archivo HTML
     * @param    archivo Nombre del archivo de texto a leer
     * @return   void    Devuelve nada
     * @see      #lexer(String, boolean)
@@ -335,7 +324,7 @@ public class Lexer {
 
     /**
     * Esta es la función principal donde se define el nombre del archivo 
-    * de texto y se manda a llamar a la funcion de lexerArtimetico
+    * de texto y se manda a llamar a la función de lexerArtimetico
     * @param  args  Argumentos que se pasan en terminal
     * @return void  Devuelve nada
     */

@@ -22,11 +22,11 @@ import java.util.Vector;
 public class Archivo {
 
     /**
-    * Esta funcion lee un archivo de texto y lo guarda en un vector de strings
-    * @param nombreArchivo  String que representa el nombre del archivo a leer
-    *                       si hay algun error en el nombre muestra una excepción
-    * @return Vector<String> Devuelve un vector que contiene cada linea del archivo de texto,
-    *                       si no puede leer un archivo devuelve un vector vacio.
+    * Esta función lee un archivo de texto y lo guarda en un vector de strings
+    * @param    nombreArchivo   Representa el nombre del archivo a leer, si hay 
+    *                           algun error en el nombre muestra una excepción
+    * @return   Vector<String>  Devuelve un vector que contiene cada linea del archivo de texto,
+    *                           si no puede leer un archivo devuelve un vector vacio.
     */
     public static Vector<String> leerArchivoTXT(String nombreArchivo) {
         Vector<String> texto = new Vector<>();
@@ -49,11 +49,13 @@ public class Archivo {
     }
 
     /**
-    * Esta funcion guarda los estilos de cada token que se encuentran en una lista en un archivo html
-    * @param tokens Lista de tokens, si esta vacia solo genera un archivo.html con la estructura principal de un HTML
-    * @return void  Devuelve nada
+    * Esta función guarda los estilos de cada token que se encuentran en una lista en un archivo html
+    * @param    tokens  Lista de tokens, si esta vacia solo genera 
+    *                   un archivo.html con la estructura principal
+    * @return   void    Devuelve nada
     */
     public static void generarArchivoHTML(List<Token> tokens) {
+        /* Estructura principal de un html */
         String inicioHTML = """
             <!DOCTYPE html>
             <html lang= "en">
