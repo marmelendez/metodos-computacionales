@@ -1,11 +1,17 @@
+/** 
+*
+*/
+
 package Lexer;
 
+/** */
 public class Token {
     private Tipo tipo;
     private String valor;
     private String color;
     private String estilo;
 
+    /* Getters */
     public Tipo getTipo() {
         return this.tipo;
     }
@@ -22,6 +28,7 @@ public class Token {
         return estilo;
     }
     
+    /* Setters */
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
@@ -42,7 +49,7 @@ public class Token {
         NUMERO("^[0-9]+[\\.]?[0-9]*$"), 
         NUMERO_EXPONENCIAL("^[0-9]+\\.?[0-9]*[E|e]-?[0-9][0-9]*$"),
         LOGICO("^#[t|f]$"), 
-        SIMBOLO("^'[\\w|\\s|[^\\w]]*$"), //cambiar
+        SIMBOLO("^'[\\w|\\s|[^\\w]]*$"), 
         OPERADOR("^[*|/|+|-|[-^]|[-=]]$"), 
         VARIABLE("^[A-Za-z]+\\w*$"), 
         ESPECIAL("^[(|)]$"), 

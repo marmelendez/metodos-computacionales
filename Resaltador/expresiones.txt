@@ -11,3 +11,4 @@
 1.2ebc+#f ; error, operador, falso, comentario
 '(#t+#f) ; símbolo, comentario
 hol@2-mundo2 ; error, operador, variable, comentario
+

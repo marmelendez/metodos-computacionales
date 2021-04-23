@@ -1,3 +1,7 @@
+/** 
+*
+*/
+
 package Lexer;
 
 import java.io.File;
@@ -8,7 +12,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class Archivos {
+/** */
+public class Archivo {
 
     public static Vector<String> leerArchivoTXT(String nombreArchivo) {
         Vector<String> texto = new Vector<>();
@@ -49,16 +54,14 @@ public class Archivos {
             <body>
             """;
         String finalHTML = "\n</body>\n</html>";
-        String estilo;
 
         try {
             FileWriter escritor = new FileWriter("resaltador.html");
 
             escritor.write(inicioHTML);
 
-            for (Token token : tokens) {
-                estilo = token.getEstilo();
-                escritor.write(estilo);
+            for (Token token : tokens) { //Obtiene el estilo de cada token generado para guardarlo en el archivo .html
+                escritor.write(token.getEstilo());
             }
 
             escritor.write(finalHTML);
