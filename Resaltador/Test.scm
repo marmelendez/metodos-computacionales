@@ -1,4 +1,4 @@
-(define (name param1-param2) ; (, define, (, variable, variable, operador, variable, ), ), comentario
+(define (name param1-param2) ; (, define, (, variable, variable, operador, variable, ), comentario
     body ;   aquí;   ocurre   la-mágia - variable, comentario
 ) ; (, comentario
 
