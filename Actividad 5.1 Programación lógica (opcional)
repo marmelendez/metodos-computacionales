@@ -1,4 +1,4 @@
-% 3. Write a predicate head/2 which takes a list as its first argument andreturns the head of the list as its second argument. It should fail ifthere is no first element.
+% 3. Write a predicate head/2 which takes a list as its first argument and returns the head of the list as its second argument. It should fail if there is no first element.
 
 head([],_):-
     fail.
@@ -6,7 +6,7 @@ head([],_):-
 head([First|_], R):-
     R is First.
    
-% 8. Write a predicate fib/2which takes a natural number as first argument, and returns the value of the Fibonacci sequence for that position (counting from 1).
+% 8. Write a predicate fib/2 which takes a natural number as first argument, and returns the value of the Fibonacci sequence for that position (counting from 1).
 
 fib(0, 0).
 fib(1, 1).
@@ -40,3 +40,11 @@ power(X, Y, Z):-
     Y_1 is Y - 1,
     power(X, Y_1, Z_1),
     Z is X * Z_1.
+
+% 16. Define sum/2 to take a list of integers as input and return the output as their sum.
+
+sum([], 0).
+
+sum([First|Last], R) :- 
+    sum(Last, N), 
+    R is N + First.
