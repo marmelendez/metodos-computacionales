@@ -20,7 +20,17 @@ last([_|Last], R):-
 max(X, Y, R) :-
     X > Y -> R is X; 
     R is Y.
+    
+% 7. Write a predicate fact/2which takes a natural number as first argument, and returns the factorial of the number.
 
+fact(0, 1).
+fact(1, 1).
+
+fact(N, R) :-
+    N > 0,
+    N_1 is N - 1,
+    fact(N_1, R_1),
+    R is R_1 * N.
    
 % 8. Write a predicate fib/2 which takes a natural number as first argument, and returns the value of the Fibonacci sequence for that position (counting from 1).
 
