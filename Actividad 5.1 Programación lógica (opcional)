@@ -14,6 +14,13 @@ last([X], X).
 last([_|Last], R):-
     last(Last, R1),
     R is R1.
+    
+% 6. Write a predicate max/3which takes three arguments, the first two are positive integer numbers and returns in the third the max ofthem.
+
+max(X, Y, R) :-
+    X > Y -> R is X; 
+    R is Y.
+
    
 % 8. Write a predicate fib/2 which takes a natural number as first argument, and returns the value of the Fibonacci sequence for that position (counting from 1).
 
