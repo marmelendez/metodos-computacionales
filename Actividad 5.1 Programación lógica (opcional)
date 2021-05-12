@@ -49,6 +49,14 @@ power(X, Y, Z):-
     Y_1 is Y - 1,
     power(X, Y_1, Z_1),
     Z is X * Z_1.
+    
+Metodo 2:
+power(_, 0, 1).
+
+power(X, Y, Z) :- 
+    Y_1 is Y - 1,
+    power(X, Y_1, Z_1), 
+    Z is Z_1 * X.
 
 % 16. Define sum/2 to take a list of integers as input and return the output as their sum.
 
