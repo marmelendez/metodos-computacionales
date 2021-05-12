@@ -74,6 +74,45 @@ power(X, Y, Z) :-
     Y_1 is Y - 1,
     power(X, Y_1, Z_1), 
     Z is Z_1 * X.
+    
+%11. Write a predicate count_vowels/2 which takes a list as its first argument and returns an integer number (as its second argument) which consists of the count of elements of the input list which area vowel (we assume that the input list only contains vowels and consonants).
+
+vowel(a).
+vowel(e).
+vowel(i).
+vowel(o).
+vowel(u).
+
+count_vowels([],0).
+
+count_vowels([X|Y], R):-
+    vowel(X),
+    count_vowels(Y, R_1),
+    R is R_1+1.
+
+count_vowels([_|Y], R):-
+    count_vowels(Y, R).
+    
+%12. Write a predicate vowels/2 which takes a list as its first argument and returnsa list (as its second argument) which consists of the elements of the input list which area vowel (we assume that the input list only contains vowels and consonants).
+
+vowel(a).
+vowel(e).
+vowel(i).
+vowel(o).
+vowel(u).
+
+vowels([],[])
+
+vowels([X],[X]):-
+    vowel(X).
+
+vowels([X|Y],Z):-
+    vowel(X),
+	vowels(Y,Z_1),
+	Z = [X|Z_1].
+
+vowels([_|Y],Z):-
+    vowels(Y,Z).
 
 % 16. Define sum/2 to take a list of integers as input and return the output as their sum.
 
