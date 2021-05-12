@@ -1,0 +1,14 @@
+%10. Write a predicate power/3 which takes a number as first argument, a natural number as second argument and returns the first number to the power of the second.
+
+power(0, 0, _):-
+    print(error),
+	fail.
+
+power(X, 0, 1):-
+    X =\= 0.
+
+power(X, Y, Z):-
+    Y >= 2, 
+    Y_1 is Y - 1,
+    power(X, Y_1, Z_1),
+    Z is X * Z_1.
