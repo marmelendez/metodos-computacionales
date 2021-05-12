@@ -5,6 +5,19 @@ head([],_):-
 
 head([First|_], R):-
     R is First.
+   
+% 8. Write a predicate fib/2which takes a natural number as first argument, and returns the value of the Fibonacci sequence for that position (counting from 1).
+
+fib(0, 0).
+fib(1, 1).
+fib(2, 1).
+
+fib(F,R) :- 
+    F1 is F - 1, 
+    F2 is F - 2,
+    fib(F1, R1), 
+    fib(F2, R2),
+    R is R1 + R2.
     
 % 9. Write a predicate length2/2 which takes a list as first argument, and returns in the second one the number of elements in the list.
 
