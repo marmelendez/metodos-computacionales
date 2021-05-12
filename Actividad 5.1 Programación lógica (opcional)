@@ -1,3 +1,10 @@
+% 9. Write a predicate length2/2 which takes a list as first argument, and returns in the second one the number of elements in the list.
+
+length2([], 0).
+length2([_|List], R) :- 
+    length2(List, L), 
+    R is L + 1.
+    
 %10. Write a predicate power/3 which takes a number as first argument, a natural number as second argument and returns the first number to the power of the second.
 
 power(0, 0, _):-
