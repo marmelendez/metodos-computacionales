@@ -5,6 +5,15 @@ head([],_):-
 
 head([First|_], R):-
     R is First.
+    
+% 5. Write a predicate last/2 which takes a list as its first argument and returns the last element of the list. 
+
+last([],_).
+last([X], X).
+
+last([_|Last], R):-
+    last(Last, R1),
+    R is R1.
    
 % 8. Write a predicate fib/2 which takes a natural number as first argument, and returns the value of the Fibonacci sequence for that position (counting from 1).
 
