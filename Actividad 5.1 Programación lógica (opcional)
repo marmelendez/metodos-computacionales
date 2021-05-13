@@ -142,3 +142,20 @@ sum([], 0).
 sum([First|Last], R) :- 
     sum(Last, N), 
     R is N + First.
+
+%17. Write a predicate nth/3 which takes two inputs: the first a positiveinteger and the second a list. The output (initially, an uninstantiatedvariable) will be the element that occurs at the nth positionin the list.
+
+nth(1,[X|_],X).
+
+nth(N,[_|Y],W):-
+    N1 is N - 1,
+    nth(N1,Y,W).
+    
+%19. Write a predicate split/4that splits a list into two parts, the length of the first part is given.
+
+dupli([],[]).
+
+dupli([X|Y],Z):-
+    dupli(Y,Z_1),
+    Z = [X,X,Z_1].
+    
