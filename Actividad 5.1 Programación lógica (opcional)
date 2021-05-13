@@ -101,18 +101,39 @@ vowel(i).
 vowel(o).
 vowel(u).
 
-vowels([],[])
+vowels([],[]).
 
 vowels([X],[X]):-
     vowel(X).
 
 vowels([X|Y],Z):-
     vowel(X),
-	vowels(Y,Z_1),
-	Z = [X|Z_1].
+    vowels(Y,Z_1),
+    Z = [X|Z_1].
 
 vowels([_|Y],Z):-
     vowels(Y,Z).
+    
+%13. Define nple/3 to take two inputs —an integer and a list of integers.The result is to be a list of integers formed by multiplying each integer in the list by the input integer.
+
+nple(_,[],[]).
+
+nple(N,[X|Y],Z):-
+    W is N * X,
+    nple(N,Y,Z_1),
+    Z = [W|Z_1].
+
+%14. Define del all/3 which takes a possible element of a list and a list as inputs and returns the list with all occurences of the name delement removed. (If the named element is not in the list thenthe result is, of course, the whole list with no deletions)
+
+del_all(_,[],[]).
+
+del_all(X,[X|Y],Z):-
+    del_all(X,Y,Z_1),
+    Z = Z_1.
+
+del_all(N,[X|Y],[X|Z]):-
+    del_all(N,Y,Z).
+
 
 % 16. Define sum/2 to take a list of integers as input and return the output as their sum.
 
