@@ -38,12 +38,4 @@ public class Almacen {
         notifyAll();
     }
     
-    /*synchronized void producir(String producto) {
-        this.espacio.add(producto);
-        notifyAll();
-    }*/
-    
-    synchronized int getEspacio(){
-        return this.espacio.size();
-    }
 }
