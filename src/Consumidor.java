@@ -1,6 +1,3 @@
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import Resaltador.Lexer;
 import Resaltador.Token;
 import java.util.ArrayList;
@@ -37,17 +34,12 @@ public class Consumidor extends Thread {
         
         for (int i = 0; i < this.numArchivos; i++) {
             producto = this.almacen.consumir();
-            System.out.println("\n----------------------------------------" + 
-                    "\nConsumidor (" + this.fileName + ") consume: " + producto + 
-                    "\n----------------------------------------");
-            Lexer lx = new Lexer(new ArrayList<Token>());
-            lx.lexerAritmetico(producto);
-
-            try { 
-                Thread.sleep(2000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Productor.class.getName()).log(Level.SEVERE, null, ex);
-            }  
+            if (!"".equals(producto)){
+                System.out.println("Consume (" + this.fileName + "): " + producto);
+                
+                Lexer lx = new Lexer(new ArrayList<Token>());
+                lx.lexerAritmetico(producto);
+            }
         }
     }
     
@@ -55,3 +47,4 @@ public class Consumidor extends Thread {
         this.bandera = false;
     }
 }
+
