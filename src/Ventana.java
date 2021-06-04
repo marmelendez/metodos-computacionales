@@ -77,8 +77,10 @@ public class Ventana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Inicio");
+        System.out.println("\n------\nInicio\n------");
         String entrada = jTextField1.getText();
+        long t1 = System.currentTimeMillis();
+        
         try {
             int nConsumidores = Integer.parseInt(entrada);
             System.out.println("Número de Consumidores: " + nConsumidores);
@@ -86,30 +88,37 @@ public class Ventana extends javax.swing.JFrame {
             Almacen a = new Almacen();
             Productor p = new Productor(0, a);
             Consumidor[] c = new Consumidor[nConsumidores];
-                       
-            p.start();
             
-            int nArchivos = 5; //checar como obtener numero de archivos
+            int nArchivos = 10; //checar como obtener numero de archivos
             int num = 1;
-            float div;
-            
-            if (nConsumidores < nArchivos) {
+
+            if (nConsumidores < nArchivos) { /*checarlo*/
                 num = nArchivos / nConsumidores;
                 if (nArchivos % nConsumidores != 0){ 
-                    div = (float)nArchivos / (float)nConsumidores;
+                    float div = (float)nArchivos / (float)nConsumidores;
                     num = (int)Math.ceil(div);
                 }
             }
             
-            for (int i=0 ; i<nConsumidores ; i++) {
+            p.start();
+            p.join();
+            
+            for (int i=0; i<nConsumidores; i++) {
                 c[i] = new Consumidor(i + 1, a, num);
                 c[i].start();
             }
-           
-        } catch (NumberFormatException ex) {
+            
+            for (int i=0; i<nConsumidores; i++) {
+                c[i].join();
+            }
+            
+        } catch (NumberFormatException | InterruptedException ex) {
             Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+        long t2 = System.currentTimeMillis();
+        System.out.println("TIEMPO: " + (t2 - t1));
+    } //GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.out.println("Terminado");
