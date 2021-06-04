@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author alejandro.degante
  */
 public class Almacen {
-    private final List<String> espacio;
+    private List<String> espacio;
     
     Almacen() {
         this.espacio = new ArrayList<>();
@@ -29,15 +29,21 @@ public class Almacen {
                 Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         return this.espacio.remove(0);
     }
     
-    synchronized void producir(String producto) {
+    synchronized void producir(String producto) {  //List<String> producto
         this.espacio.add(producto);
         notifyAll();
     }
     
-    int getNumeroArchivos(){
+    /*synchronized void producir(String producto) {
+        this.espacio.add(producto);
+        notifyAll();
+    }*/
+    
+    synchronized int getEspacio(){
         return this.espacio.size();
     }
 }
