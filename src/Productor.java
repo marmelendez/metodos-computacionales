@@ -1,7 +1,5 @@
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,19 +30,14 @@ public class Productor extends Thread{
             String nombre = f.getName();
             if (nombre.contains(".txt")){
                 this.almacen.producir(nombre);
-                
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Productor.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         }
     }
+   
     
     @Override
     public void run() {
-        System.out.println("-> Productor " + this.id);
+        System.out.println("Productor " + this.id);
         getArchivos();
     }
     
