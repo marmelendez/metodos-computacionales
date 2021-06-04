@@ -21,8 +21,8 @@ import Resaltador.Token.Tipo;
 
 
 public class Lexer {
-    static ArrayList<Token> tokens = new ArrayList<>();
-    static String lineaTexto;
+    ArrayList<Token> tokens = new ArrayList<>();
+    String lineaTexto;
 
     public Lexer(ArrayList<Token> tokens){
         this.tokens = tokens;
@@ -32,7 +32,7 @@ public class Lexer {
     * @param    tipoToken Representa un Tipo válido del token   
     * @return   String    Devuelve el color del token con base a su tipo
     */
-    private static String definirColor(Tipo tipoToken) {
+    private String definirColor(Tipo tipoToken) {
         if (tipoToken.equals(Tipo.NUMERO)  
             || tipoToken.equals(Tipo.NUMERO_EXPONENCIAL)) {
             return "skyblue";
@@ -58,7 +58,7 @@ public class Lexer {
     * @param    palabra El valor del token identificado
     * @return   void    Devuelve nada
     */
-    private static void agregarEspacios(String palabra) {
+    private void agregarEspacios(String palabra) {
         int index = lineaTexto.indexOf(palabra);
         Token tok = new Token();
         tok.setValor("espacio");
@@ -84,7 +84,7 @@ public class Lexer {
     * @return   boolean Devuelve si el carácter que se encuentra en el índice i 
     *                   de la linea es delimitador o no
     */
-    private static boolean esDelimitador(int i, String linea, int type) {
+    private boolean esDelimitador(int i, String linea, int type) {
         int codigo = linea.codePointAt(i);
         ArrayList<Integer> delimitador = new ArrayList<>(Arrays.asList(39,40,41,42,43,45,47,59,61,94)); //Arreglo de numeros que representa el codigo ASCII de los simbolos delimitadores
 
@@ -107,7 +107,7 @@ public class Lexer {
     * @see      #definirColor(Tipo)
     * @see      #agregarEspacios(String)
     */
-    private static boolean matchesPatron(String palabra, StringTokenizer str) {
+    private boolean matchesPatron(String palabra, StringTokenizer str) {
         boolean matched = false;
         
         for (Tipo tokenTipo : Tipo.values()) { //Se realiza un match con todos los patrones declarados en enum Tipo
@@ -160,7 +160,7 @@ public class Lexer {
     *                   ahora separadando los tokens por espacios
     * @see      #matchesPatron(String, StringTokenizer)
     */
-    private static String obtenerTokens(String palabra) {
+    private String obtenerTokens(String palabra) {
         String input = "";
         String lexema;
         int i = 0;
@@ -246,7 +246,7 @@ public class Lexer {
     * @see      #lexerAritmetico(String)
     * @see      #obtenerTokens(String)  
     */
-    private static void lexer(String input, boolean nvoInput) {
+    private void lexer(String input, boolean nvoInput) {
         StringTokenizer str = new StringTokenizer(input);
 
         while (str.hasMoreTokens()) { 
@@ -280,7 +280,7 @@ public class Lexer {
     * si el token no es un espacio o salto de linea
     * @return void Devuelve nada
     */
-    private static void imprimirTokens() {
+    private void imprimirTokens() {
         Tipo tipo;
         String valor;
 
@@ -309,7 +309,8 @@ public class Lexer {
     * @see      Archivo#leerArchivoTXT(String)
     * @see      Archivo#generarArchivoHTML(java.util.List)
     */
-    public static void lexerAritmetico(String archivo) {
+    public void lexerAritmetico(String archivo) {
+        
         Vector<String> texto = Archivo.leerArchivoTXT(archivo); //Lee archivo .txt
         
         /* se crea token de salto de linea */
@@ -336,7 +337,6 @@ public class Lexer {
     */
     public static void main(String[] args) {
         /*String nombreArchivo = "expresiones.txt";
-
         lexerAritmetico(nombreArchivo);*/
     }   
 }
